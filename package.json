@@ -24,9 +24,8 @@
   },
   "homepage": "https://github.com/sudodotdog/sudoo-mock#readme",
   "devDependencies": {
-    "@sudoo/triforce": "^1.1.0"
+    "@sudoo/triforce": "^1.5.0"
   },
-  "dependencies": {},
   "nyc": {
     "extension": [
       ".ts"

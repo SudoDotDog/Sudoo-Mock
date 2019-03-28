@@ -18,8 +18,8 @@ export class Sandbox {
         return () => returnWith;
     }
 
-    private readonly _called: Call[];
-    private readonly _returnWith: any;
+    private _called: Call[];
+    private _returnWith: any;
 
     public constructor(returnWith?: any) {
 
@@ -70,5 +70,11 @@ export class Sandbox {
             return this._returnWith;
         };
         return callback.bind(this);
+    }
+
+    public reset(): this {
+
+        this._called = [];
+        return this;
     }
 }

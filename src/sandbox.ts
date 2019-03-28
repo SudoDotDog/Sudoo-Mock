@@ -37,19 +37,19 @@ export class Sandbox {
         return this._called.length;
     }
 
-    public get first(): Call | undefined {
+    public get first(): Call {
 
-        return this.call(0);
+        return this.call(0) as Call;
     }
 
-    public get second(): Call | undefined {
+    public get second(): Call {
 
-        return this.call(1);
+        return this.call(1) as Call;
     }
 
-    public get third(): Call | undefined {
+    public get third(): Call {
 
-        return this.call(2);
+        return this.call(2) as Call;
     }
 
     public call(order: number): Call | undefined {

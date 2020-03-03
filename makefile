@@ -4,7 +4,10 @@ dev := typescript/tsconfig.dev.json
 
 # NPX functions
 tsc := node_modules/.bin/tsc
+ts_node := node_modules/.bin/ts-node
 mocha := node_modules/.bin/mocha
+
+.IGNORE: clean-linux
 
 main: dev
 
@@ -33,16 +36,21 @@ install-prod:
 	@echo "[INFO] Installing Dependencies"
 	@yarn install --production=true
 
-clean:
-ifeq ($(OS), Windows_NT)
-	@echo "[INFO] Skipping"
-else
+license: clean
+	@echo "[INFO] Sign files"
+	@NODE_ENV=development $(ts_node) script/license.ts
+
+clean: clean-linux
+	@echo "[INFO] Cleaning release files"
+	@NODE_ENV=development $(ts_node) script/clean-app.ts
+
+clean-linux:
 	@echo "[INFO] Cleaning dist files"
 	@rm -rf dist
+	@rm -rf dist_script
 	@rm -rf .nyc_output
 	@rm -rf coverage
-endif
 
-publish: install tests build
+publish: install tests license build
 	@echo "[INFO] Publishing package"
-	@npm publish --access=public
+	@cd app && npm publish --access=public

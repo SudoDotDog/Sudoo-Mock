@@ -4,7 +4,7 @@
  * @description Index
  */
 
-export { Call } from "./call";
-export { Mock } from "./mock";
-export { Sandbox } from "./sandbox";
+export * from "./call";
+export * from "./mock";
+export * from "./sandbox";
 

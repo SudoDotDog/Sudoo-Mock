@@ -4,7 +4,7 @@
  * @description Mock
  */
 
-export class Mock<T extends any> {
+export class Mock<T extends any = any> {
 
     public static create<T>(outer: T, functionName: keyof T): Mock<T> {
 

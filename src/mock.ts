@@ -13,6 +13,14 @@ export class Mock<T extends any = any> {
         return this._pendingRestore.size;
     }
 
+    public static restoreAll(): void {
+
+        for (const each of this._pendingRestore) {
+            each.restore();
+        }
+        return;
+    }
+
     public static create<T>(outer: T, functionName: keyof T): Mock<T> {
 
         return new Mock(outer, functionName);

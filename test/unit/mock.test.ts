@@ -11,6 +11,10 @@ import * as ExampleFunctions from "../mock/example";
 
 describe('Given {Mock} Class', (): void => {
 
+    after(() => {
+        Mock.restoreAll();
+    });
+
     it('should be able to construct', (): void => {
 
         const mock: Mock = Mock.create(ExampleFunctions, 'functionThatReturnOne');

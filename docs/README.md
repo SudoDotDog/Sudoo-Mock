@@ -6,3 +6,11 @@
 [![downloads](https://img.shields.io/npm/dm/@sudoo/mock.svg)](https://www.npmjs.com/package/@sudoo/mock)
 
 :bar_chart: Mock test
+
+## Install
+
+```sh
+yarn add @sudoo/mock --dev
+# Or
+npm install @sudoo/mock --save-dev
+```

@@ -1,13 +1,13 @@
 /**
  * @author WMXPY
- * @namespace Brontosaurus_Web
- * @description Placeholder
+ * @namespace Mock
+ * @description Mock
  * @package Unit Test
  */
 
 import { expect } from 'chai';
 
-describe('p', (): void => {
+describe('Given {Mock} Class', (): void => {
 
     it('p', (): void => {
 

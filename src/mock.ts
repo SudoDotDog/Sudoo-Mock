@@ -48,7 +48,11 @@ export class Mock<T extends any = any> {
         return this._mocking;
     }
 
-    public mock(func: (...args: any) => any): void {
+    public mock(func: (...args: any) => any): boolean {
+
+        if (this._mocking) {
+            return false;
+        }
 
         this._temp = this._outer[this._functionName];
         this._outer[this._functionName] = func as any;
@@ -57,14 +61,13 @@ export class Mock<T extends any = any> {
         if (!Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.add(this);
         }
-
-        return;
+        return true;
     }
 
-    public restore(): void {
+    public restore(): boolean {
 
         if (!this._mocking) {
-            return;
+            return false;
         }
 
         this._outer[this._functionName] = this._temp;
@@ -73,7 +76,6 @@ export class Mock<T extends any = any> {
         if (Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.delete(this);
         }
-
-        return;
+        return true;
     }
 }

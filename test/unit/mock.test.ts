@@ -100,7 +100,7 @@ describe('Given {Mock} Class', (): void => {
         mock.restore();
     });
 
-    it('should be able to restore class', (): void => {
+    it('should be able to restore class getter', (): void => {
 
         const clazz: ExampleClass = new ExampleClass();
 

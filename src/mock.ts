@@ -4,6 +4,9 @@
  * @description Mock
  */
 
+import { AnyFunction } from "./declare";
+import { getDescriptor, DescriptorInfo } from "./descriptor";
+
 export class Mock<T extends any = any> {
 
     private static _pendingRestore: Set<Mock> = new Set<Mock>();
@@ -48,16 +51,23 @@ export class Mock<T extends any = any> {
         return this._mocking;
     }
 
-    public mock(func: (...args: any) => any): boolean {
+    public mock(func: AnyFunction): boolean {
 
         if (this._mocking) {
             return false;
         }
 
-        this._temp = this._outer[this._functionName];
-        this._outer[this._functionName] = func as any;
-        this._mocking = true;
+        const descriptor: DescriptorInfo = getDescriptor(this._outer, this._functionName);
 
+        if (descriptor.isGetter) {
+            return false;
+        } else if (descriptor.isSetter) {
+            return false;
+        } else {
+            this._mockFunction(func);
+        }
+
+        this._mocking = true;
         if (!Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.add(this);
         }
@@ -77,5 +87,12 @@ export class Mock<T extends any = any> {
             Mock._pendingRestore.delete(this);
         }
         return true;
+    }
+
+    private _mockFunction(func: AnyFunction): void {
+
+        this._temp = this._outer[this._functionName];
+        this._outer[this._functionName] = func as any;
+        return;
     }
 }

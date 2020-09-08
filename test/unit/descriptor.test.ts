@@ -10,7 +10,7 @@ import { DescriptorInfo, getDescriptor } from '../../src/descriptor';
 import { ExampleClass } from '../mock/class';
 import * as ExampleFunctions from "../mock/example";
 
-describe.only('Given [Descriptor] Helper methods', (): void => {
+describe('Given [Descriptor] Helper methods', (): void => {
 
     it('should be able to get descriptor of function', (): void => {
 

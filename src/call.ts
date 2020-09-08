@@ -1,6 +1,6 @@
 /**
  * @author WMXPY
- * @namespace Sudoo_Mock
+ * @namespace Mock
  * @description Call
  */
 

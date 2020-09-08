@@ -21,7 +21,22 @@ describe('Given {Mock} Class', (): void => {
     it('should be able to mock function', (): void => {
 
         const mock: Mock = Mock.create(ExampleFunctions, 'functionThatReturnOne');
+        mock.mock(() => 2);
 
-        expect(mock).to.be.instanceOf(Mock);
+        const returnValue: number = ExampleFunctions.functionThatReturnOne();
+
+        expect(returnValue).to.be.equal(2);
+        mock.restore();
+    });
+
+    it('should be able to restore function', (): void => {
+
+        const mock: Mock = Mock.create(ExampleFunctions, 'functionThatReturnOne');
+        mock.mock(() => 2);
+        mock.restore();
+
+        const returnValue: number = ExampleFunctions.functionThatReturnOne();
+
+        expect(returnValue).to.be.equal(1);
     });
 });

@@ -30,6 +30,7 @@ describe('Given {Mock} Class', (): void => {
 
         const returnValue: number = ExampleFunctions.functionThatReturnOne();
 
+        expect(mock.mocking).to.be.equal(true);
         expect(Mock.countPendingRestore()).to.be.equal(1);
         expect(returnValue).to.be.equal(2);
         mock.restore();
@@ -43,6 +44,7 @@ describe('Given {Mock} Class', (): void => {
 
         const returnValue: number = ExampleFunctions.functionThatReturnOne();
 
+        expect(mock.mocking).to.be.equal(false);
         expect(Mock.countPendingRestore()).to.be.equal(0);
         expect(returnValue).to.be.equal(1);
     });
@@ -72,7 +74,7 @@ describe('Given {Mock} Class', (): void => {
         mock.restore();
     });
 
-    it('should be able to retore class', (): void => {
+    it('should be able to restore class', (): void => {
 
         const clazz: ExampleClass = new ExampleClass();
 

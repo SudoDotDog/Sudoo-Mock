@@ -7,6 +7,11 @@
 
 export class ExampleClass {
 
+    public get one(): number {
+
+        return 1;
+    }
+
     public getOne(): number {
 
         return 1;

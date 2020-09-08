@@ -8,6 +8,7 @@
 import { expect } from 'chai';
 import { Mock } from "../../src";
 import * as ExampleFunctions from "../mock/example";
+import { ExampleClass } from '../mock/class';
 
 describe('Given {Mock} Class', (): void => {
 
@@ -55,5 +56,33 @@ describe('Given {Mock} Class', (): void => {
 
         Mock.restoreAll();
         expect(Mock.countPendingRestore()).to.be.equal(0);
+    });
+
+    it('should be able to mock class', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'getOne');
+        mock.mock(() => 2);
+
+        const returnValue: number = clazz.getOne();
+
+        expect(Mock.countPendingRestore()).to.be.equal(1);
+        expect(returnValue).to.be.equal(2);
+        mock.restore();
+    });
+
+    it('should be able to retore class', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'getOne');
+        mock.mock(() => 2);
+        mock.restore();
+
+        const returnValue: number = clazz.getOne();
+
+        expect(Mock.countPendingRestore()).to.be.equal(0);
+        expect(returnValue).to.be.equal(1);
     });
 });

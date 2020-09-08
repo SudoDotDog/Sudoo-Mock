@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/sudodotdog/sudoo-mock#readme",
   "devDependencies": {
-    "@sudoo/io": "^1.7.0",
-    "@sudoo/triforce": "^2.2.1"
+    "@sudoo/io": "^1.8.0",
+    "@sudoo/triforce": "^2.8.5"
   },
   "nyc": {
     "extension": [
@@ -41,9 +41,6 @@
       "text-summary"
     ],
     "report-dir": "coverage",
-    "require": [
-      "./test/tshook.js"
-    ],
     "sourceMap": true
   }
 }

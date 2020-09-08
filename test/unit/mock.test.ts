@@ -29,6 +29,7 @@ describe('Given {Mock} Class', (): void => {
 
         const returnValue: number = ExampleFunctions.functionThatReturnOne();
 
+        expect(Mock.countPendingRestore()).to.be.equal(1);
         expect(returnValue).to.be.equal(2);
         mock.restore();
     });
@@ -41,6 +42,18 @@ describe('Given {Mock} Class', (): void => {
 
         const returnValue: number = ExampleFunctions.functionThatReturnOne();
 
+        expect(Mock.countPendingRestore()).to.be.equal(0);
         expect(returnValue).to.be.equal(1);
+    });
+
+    it('should be able to restore all functions', (): void => {
+
+        const mock: Mock = Mock.create(ExampleFunctions, 'functionThatReturnOne');
+        mock.mock(() => 2);
+
+        expect(Mock.countPendingRestore()).to.be.equal(1);
+
+        Mock.restoreAll();
+        expect(Mock.countPendingRestore()).to.be.equal(0);
     });
 });

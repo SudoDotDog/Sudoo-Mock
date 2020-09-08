@@ -6,7 +6,7 @@
 
 export class Mock<T extends any> {
 
-    public static create<T>(outer: T, functionName: keyof T) {
+    public static create<T>(outer: T, functionName: keyof T): Mock<T> {
 
         return new Mock(outer, functionName);
     }
@@ -25,14 +25,16 @@ export class Mock<T extends any> {
         this.restore = this.restore.bind(this);
     }
 
-    public mock(func: (...args: any) => any) {
+    public mock(func: (...args: any) => any): void {
 
         this._temp = this._outer[this._functionName];
         this._outer[this._functionName] = func as any;
+        return;
     }
 
-    public restore() {
+    public restore(): void {
 
         this._outer[this._functionName] = this._temp;
+        return;
     }
 }

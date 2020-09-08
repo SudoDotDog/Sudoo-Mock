@@ -6,6 +6,13 @@
 
 export class Mock<T extends any = any> {
 
+    private static _pendingRestore: Set<Mock> = new Set<Mock>();
+
+    public static countPendingRestore(): number {
+
+        return this._pendingRestore.size;
+    }
+
     public static create<T>(outer: T, functionName: keyof T): Mock<T> {
 
         return new Mock(outer, functionName);
@@ -29,12 +36,22 @@ export class Mock<T extends any = any> {
 
         this._temp = this._outer[this._functionName];
         this._outer[this._functionName] = func as any;
+
+        if (!Mock._pendingRestore.has(this)) {
+            Mock._pendingRestore.add(this);
+        }
+
         return;
     }
 
     public restore(): void {
 
         this._outer[this._functionName] = this._temp;
+
+        if (Mock._pendingRestore.has(this)) {
+            Mock._pendingRestore.delete(this);
+        }
+
         return;
     }
 }

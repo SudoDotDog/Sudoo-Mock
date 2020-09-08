@@ -60,7 +60,7 @@ export class Mock<T extends any = any> {
         const descriptor: DescriptorInfo = getDescriptor(this._outer, this._functionName);
 
         if (descriptor.isGetter) {
-            return false;
+            this._mockGetter(func, descriptor);
         } else if (descriptor.isSetter) {
             return false;
         } else {
@@ -80,7 +80,16 @@ export class Mock<T extends any = any> {
             return false;
         }
 
-        this._outer[this._functionName] = this._temp;
+        const descriptor: DescriptorInfo = getDescriptor(this._outer, this._functionName);
+
+        if (descriptor.isGetter) {
+            this._restoreGetter(descriptor);
+        } else if (descriptor.isSetter) {
+            return false;
+        } else {
+            this._restoreFunction();
+        }
+
         this._mocking = false;
 
         if (Mock._pendingRestore.has(this)) {
@@ -93,6 +102,30 @@ export class Mock<T extends any = any> {
 
         this._temp = this._outer[this._functionName];
         this._outer[this._functionName] = func as any;
+        return;
+    }
+
+    private _restoreFunction(): void {
+
+        this._outer[this._functionName] = this._temp;
+        return;
+    }
+
+    private _mockGetter(func: AnyFunction, descriptor: DescriptorInfo): void {
+
+        this._temp = descriptor.getterFunction;
+        Object.defineProperty(this._outer, this._functionName, {
+            get: func,
+            configurable: descriptor.configurable,
+        });
+        return;
+    }
+    private _restoreGetter(descriptor: DescriptorInfo): void {
+
+        Object.defineProperty(this._outer, this._functionName, {
+            get: this._temp,
+            configurable: descriptor.configurable,
+        });
         return;
     }
 }

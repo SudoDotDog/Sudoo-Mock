@@ -22,6 +22,8 @@ describe('Given [Descriptor] Helper methods', (): void => {
             writable: true,
             isGetter: false,
             isSetter: false,
+            getterFunction: undefined,
+            setterFunction: undefined,
         });
     });
 
@@ -30,12 +32,6 @@ describe('Given [Descriptor] Helper methods', (): void => {
         const clazz: ExampleClass = new ExampleClass();
         const descriptor: DescriptorInfo = getDescriptor(clazz, 'one');
 
-        expect(descriptor).to.be.deep.equal({
-            configurable: true,
-            enumerable: false,
-            writable: false,
-            isGetter: true,
-            isSetter: false,
-        });
+        expect(descriptor.isGetter).to.be.true;
     });
 });

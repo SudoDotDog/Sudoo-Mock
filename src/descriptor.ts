@@ -11,6 +11,9 @@ export type DescriptorInfo = {
     readonly writable: boolean;
     readonly isGetter: boolean;
     readonly isSetter: boolean;
+
+    readonly getterFunction?: any;
+    readonly setterFunction?: any;
 };
 
 export const getRawDescriptor = <T extends any = any>(target: T, name: keyof T): PropertyDescriptor | undefined => {
@@ -47,5 +50,9 @@ export const getDescriptor = <T extends any = any>(target: T, name: keyof T): De
         isGetter: Boolean(descriptor.get),
         // eslint-disable-next-line @typescript-eslint/unbound-method
         isSetter: Boolean(descriptor.set),
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        getterFunction: descriptor.get,
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        setterFunction: descriptor.set,
     };
 };

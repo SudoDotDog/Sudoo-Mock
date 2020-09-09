@@ -74,6 +74,26 @@ export class Mock<T extends any = any> {
         return true;
     }
 
+    public mockGetter(func: AnyFunction): boolean {
+
+        if (this._mocking) {
+            return false;
+        }
+
+        const descriptor: DescriptorInfo = getDescriptor(this._outer, this._functionName);
+
+        if (!descriptor.isGetter) {
+            throw new Error('[Sudoo-Mock] Target is not a getter');
+        }
+
+        this._mockGetter(func, descriptor);
+        this._mocking = true;
+        if (!Mock._pendingRestore.has(this)) {
+            Mock._pendingRestore.add(this);
+        }
+        return true;
+    }
+
     public restore(): boolean {
 
         if (!this._mocking) {

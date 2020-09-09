@@ -35,12 +35,18 @@ export class Mock<T extends any = any> {
     private _temp: any;
     private _mocking: boolean;
 
+    private _mockingGetter: boolean;
+    private _mockingSetter: boolean;
+
     private constructor(outer: T, functionName: keyof T) {
 
         this._outer = outer;
         this._functionName = functionName;
 
         this._mocking = false;
+
+        this._mockingGetter = false;
+        this._mockingSetter = false;
 
         this.mock = this.mock.bind(this);
         this.restore = this.restore.bind(this);
@@ -68,6 +74,7 @@ export class Mock<T extends any = any> {
         }
 
         this._mocking = true;
+
         if (!Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.add(this);
         }
@@ -84,6 +91,28 @@ export class Mock<T extends any = any> {
 
         if (!descriptor.isGetter) {
             throw new Error('[Sudoo-Mock] Target is not a getter');
+        }
+
+        this._mockGetter(func, descriptor);
+        this._mocking = true;
+        this._mockingSetter = true;
+
+        if (!Mock._pendingRestore.has(this)) {
+            Mock._pendingRestore.add(this);
+        }
+        return true;
+    }
+
+    public mockSetter(func: AnyFunction): boolean {
+
+        if (this._mocking) {
+            return false;
+        }
+
+        const descriptor: DescriptorInfo = getDescriptor(this._outer, this._functionName);
+
+        if (!descriptor.isSetter) {
+            throw new Error('[Sudoo-Mock] Target is not a setter');
         }
 
         this._mockGetter(func, descriptor);

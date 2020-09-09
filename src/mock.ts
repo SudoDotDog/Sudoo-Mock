@@ -117,6 +117,8 @@ export class Mock<T extends any = any> {
 
         this._mockGetter(func, descriptor);
         this._mocking = true;
+        this._mockingSetter = true;
+
         if (!Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.add(this);
         }
@@ -131,15 +133,17 @@ export class Mock<T extends any = any> {
 
         const descriptor: DescriptorInfo = getDescriptor(this._outer, this._functionName);
 
-        if (descriptor.isGetter) {
+        if (descriptor.isGetter && this._mockingGetter) {
             this._restoreGetter(descriptor);
-        } else if (descriptor.isSetter) {
+        } if (descriptor.isSetter && this._mockingSetter) {
             return false;
         } else {
             this._restoreFunction();
         }
 
         this._mocking = false;
+        this._mockingGetter = false;
+        this._mockingSetter = false;
 
         if (Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.delete(this);

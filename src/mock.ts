@@ -67,8 +67,10 @@ export class Mock<T extends any = any> {
 
         if (descriptor.isGetter) {
             this._mockGetter(func, descriptor);
+            this._mockingGetter = true;
         } else if (descriptor.isSetter) {
-            return false;
+            this._mockSetter(func, descriptor);
+            this._mockingSetter = true;
         } else {
             this._mockFunction(func);
         }
@@ -95,7 +97,7 @@ export class Mock<T extends any = any> {
 
         this._mockGetter(func, descriptor);
         this._mocking = true;
-        this._mockingSetter = true;
+        this._mockingGetter = true;
 
         if (!Mock._pendingRestore.has(this)) {
             Mock._pendingRestore.add(this);
@@ -115,7 +117,7 @@ export class Mock<T extends any = any> {
             throw new Error('[Sudoo-Mock] Target is not a setter');
         }
 
-        this._mockGetter(func, descriptor);
+        this._mockSetter(func, descriptor);
         this._mocking = true;
         this._mockingSetter = true;
 
@@ -136,7 +138,7 @@ export class Mock<T extends any = any> {
         if (descriptor.isGetter && this._mockingGetter) {
             this._restoreGetter(descriptor);
         } if (descriptor.isSetter && this._mockingSetter) {
-            return false;
+            this._restoreSetter(descriptor);
         } else {
             this._restoreFunction();
         }
@@ -169,14 +171,38 @@ export class Mock<T extends any = any> {
         this._temp = descriptor.getterFunction;
         Object.defineProperty(this._outer, this._functionName, {
             get: func,
+            set: descriptor.setterFunction,
             configurable: descriptor.configurable,
         });
         return;
     }
+
     private _restoreGetter(descriptor: DescriptorInfo): void {
 
         Object.defineProperty(this._outer, this._functionName, {
             get: this._temp,
+            set: descriptor.setterFunction,
+            configurable: descriptor.configurable,
+        });
+        return;
+    }
+
+    private _mockSetter(func: AnyFunction, descriptor: DescriptorInfo): void {
+
+        this._temp = descriptor.setterFunction;
+        Object.defineProperty(this._outer, this._functionName, {
+            get: descriptor.getterFunction,
+            set: func,
+            configurable: descriptor.configurable,
+        });
+        return;
+    }
+
+    private _restoreSetter(descriptor: DescriptorInfo): void {
+
+        Object.defineProperty(this._outer, this._functionName, {
+            get: descriptor.getterFunction,
+            set: this._temp,
             configurable: descriptor.configurable,
         });
         return;

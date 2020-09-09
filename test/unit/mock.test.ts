@@ -168,4 +168,39 @@ describe('Given {Mock} Class', (): void => {
         clazz.one = 100;
         expect(clazz.target).to.be.equal(1);
     });
+
+    it('should be able to avoid multiple mock', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'one');
+        mock.mockGetter(() => 2);
+        mock.mockSetter(function (this: any) {
+            this.target = 2;
+        });
+
+        expect(Mock.countPendingRestore()).to.be.equal(1);
+        expect(clazz.one).to.be.equal(2);
+        expect(clazz.target).to.be.equal(0);
+        clazz.one = 100;
+        expect(clazz.target).to.be.equal(1);
+        mock.restore();
+    });
+
+    it('should be able to avoid multiple restore', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'one');
+        mock.mockGetter(() => 2);
+        mock.mockSetter(function (this: any) {
+            this.target = 2;
+        });
+
+        expect(Mock.countPendingRestore()).to.be.equal(1);
+        expect(clazz.one).to.be.equal(2);
+        mock.restore();
+
+        expect(clazz.one).to.be.equal(1);
+    });
 });

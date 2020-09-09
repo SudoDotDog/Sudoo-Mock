@@ -137,7 +137,7 @@ export class Mock<T extends any = any> {
 
         if (descriptor.isGetter && this._mockingGetter) {
             this._restoreGetter(descriptor);
-        } if (descriptor.isSetter && this._mockingSetter) {
+        } else if (descriptor.isSetter && this._mockingSetter) {
             this._restoreSetter(descriptor);
         } else {
             this._restoreFunction();

@@ -88,7 +88,7 @@ describe('Given {Mock} Class', (): void => {
         expect(returnValue).to.be.equal(1);
     });
 
-    it('should be able to mock class getter', (): void => {
+    it('should be able to mock class getter by default', (): void => {
 
         const clazz: ExampleClass = new ExampleClass();
 
@@ -100,7 +100,7 @@ describe('Given {Mock} Class', (): void => {
         mock.restore();
     });
 
-    it('should be able to restore class getter', (): void => {
+    it('should be able to restore class getter by default', (): void => {
 
         const clazz: ExampleClass = new ExampleClass();
 
@@ -110,5 +110,62 @@ describe('Given {Mock} Class', (): void => {
 
         expect(Mock.countPendingRestore()).to.be.equal(0);
         expect(clazz.one).to.be.equal(1);
+    });
+
+    it('should be able to mock class getter', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'one');
+        mock.mockGetter(() => 2);
+
+        expect(Mock.countPendingRestore()).to.be.equal(1);
+        expect(clazz.one).to.be.equal(2);
+        mock.restore();
+    });
+
+    it('should be able to restore class getter', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'one');
+        mock.mockGetter(() => 2);
+        mock.restore();
+
+        expect(Mock.countPendingRestore()).to.be.equal(0);
+        expect(clazz.one).to.be.equal(1);
+    });
+
+    it('should be able to mock class setter', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'one');
+        mock.mockSetter(function (this: any) {
+            this.target = 2;
+        });
+
+        expect(Mock.countPendingRestore()).to.be.equal(1);
+
+        expect(clazz.target).to.be.equal(0);
+        clazz.one = 100;
+        expect(clazz.target).to.be.equal(2);
+        mock.restore();
+    });
+
+    it('should be able to restore class setter', (): void => {
+
+        const clazz: ExampleClass = new ExampleClass();
+
+        const mock: Mock = Mock.create(clazz, 'one');
+        mock.mockSetter(function (this: any) {
+            this.target = 2;
+        });
+        mock.restore();
+
+        expect(Mock.countPendingRestore()).to.be.equal(0);
+        expect(clazz.target).to.be.equal(0);
+        clazz.one = 100;
+        expect(clazz.target).to.be.equal(1);
     });
 });

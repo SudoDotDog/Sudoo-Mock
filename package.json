@@ -4,7 +4,7 @@
   "description": ":bar_chart: Mock test",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sudodotdog/sudoo-mock.git"
+    "url": "git+https://github.com/sudodotdog/sudoo-Mock.git"
   },
   "keywords": [
     "Sudoo"
@@ -12,9 +12,9 @@
   "author": "WMXPY",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sudodotdog/sudoo-mock/issues"
+    "url": "https://github.com/sudodotdog/sudoo-Mock/issues"
   },
-  "homepage": "https://github.com/sudodotdog/sudoo-mock#readme",
+  "homepage": "https://github.com/sudodotdog/sudoo-Mock#readme",
   "devDependencies": {
     "@sudoo/io": "^1.8.0",
     "@sudoo/triforce": "^2.9.9"

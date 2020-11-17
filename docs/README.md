@@ -14,3 +14,17 @@ yarn add @sudoo/mock --dev
 # Or
 npm install @sudoo/mock --save-dev
 ```
+
+## Usage
+
+```ts
+import { Mock } from "@sudoo/mock";
+import * as SomeFunction from "somewhere-with-util";
+
+const mock: Mock = Mock.create(SomeFunction, 'functionThatReturnOne');
+mock.mock(() => 2);
+
+SomeFunction.functionThatReturnOne(); // 2
+```
+
+For more advanced usage, such as getter and setter mock, see source code for more details.

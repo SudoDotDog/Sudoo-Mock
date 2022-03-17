@@ -17,7 +17,7 @@
   "homepage": "https://github.com/sudodotdog/sudoo-Mock#readme",
   "devDependencies": {
     "@sudoo/io": "^1.8.0",
-    "@sudoo/triforce": "^2.18.0"
+    "@sudoo/triforce": "^3.0.0"
   },
   "nyc": {
     "extension": [
